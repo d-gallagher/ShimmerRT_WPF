@@ -3,13 +3,28 @@ using ShimmerInterfaceTest;
 using ShimmerRT.models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 
 namespace Myo_Wpf
 {
     public class Shimmer3dViewModel : BaseViewModel, IFeedable
     {
+        private System.Windows.Media.Media3D.Quaternion q;
+        public System.Windows.Media.Media3D.Quaternion Q
+        {
+            get { return q; }
+            set
+            {
+                q = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         #region Fields and Properties
 
         //ref to shimmer controller
@@ -45,11 +60,45 @@ namespace Myo_Wpf
             }
         }
 
+        private RotateTransform3D cubeRotation;
+        public RotateTransform3D CubeRotation
+        {
+            get { return cubeRotation; }
+            set
+            {
+                cubeRotation = value;
+                OnPropertyChanged();
+            }
+        }
+
         private readonly DelegateCommand _streamAndConnectCommand;
         public ICommand StreamAndConnectCommand => _streamAndConnectCommand;
 
         private readonly DelegateCommand _disconnectCommand;
         public ICommand DisconnectCommand => _disconnectCommand;
+
+        private Vector3D xAxis;
+        public Vector3D XAxis
+        {
+            get => xAxis;
+            set
+            {
+                xAxis = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double xRot;
+        public double XRot
+        {
+            get => xRot;
+            set
+            {
+                xRot = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         #endregion
 
@@ -59,6 +108,8 @@ namespace Myo_Wpf
         {
             _streamAndConnectCommand = new DelegateCommand(ConnectAndStream);
             _disconnectCommand = new DelegateCommand(Disconnect);
+
+            XAxis = new Vector3D(1, 0, 0);
         }
 
         #endregion
@@ -73,7 +124,7 @@ namespace Myo_Wpf
 
             OutputText += "\nConnecting...";
             OutputText += "\nCOM PORT: " + comPort;
-            OutputText += "\nTrying to connect on " + this.comPort;
+            OutputText += "\nTrying to connect on COM" + this.comPort;
 
             int portNum;
             string connStr = "COM";
@@ -88,7 +139,6 @@ namespace Myo_Wpf
                 OutputText += "\nINVALID COM PORT";
                 return;
             }
-
 
             sc = new ShimmerController(this);
             sc.Connect(connStr + portNum);
@@ -128,12 +178,49 @@ namespace Myo_Wpf
         {
             if (data != null)
             {
-                lastShimmerModel = Shimmer3DModel.GetModelFromArray(data.ToArray());
-                //dataQueue.Enqueue(s);
-                //if (count % 10 == 0) { Shimmer3DModel.PrintModel(s); }
-                //count++;
-                Shimmer3DModel.PrintModel(lastShimmerModel);
-                //RotateCube(s);
+                //lastShimmerModel = Shimmer3DModel.GetModelFromArray(data.ToArray());
+                //Shimmer3DModel.PrintModel(lastShimmerModel);
+                ////queue.Enqueue(s);
+
+                //var x = lastShimmerModel.Quaternion_0_CAL;
+                //var y = lastShimmerModel.Quaternion_1_CAL;
+                //var z = lastShimmerModel.Quaternion_2_CAL;
+                //var w = lastShimmerModel.Quaternion_3_CAL;
+
+                //System.Windows.Media.Media3D.Quaternion q = new System.Windows.Media.Media3D.Quaternion(x, y, z, w);
+                //cubeRotation = new RotateTransform3D(new QuaternionRotation3D(q));
+
+                //Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), x));
+                //Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), y));
+                //Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), z));
+
+
+
+                //// Trying to freeze the rotation before applying it to CubeRotation Property
+                //var rot = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), z));
+                //rot.Freeze();
+                //// Trying to create the rotation object on UI thread...?
+                Dispatcher.CurrentDispatcher.Invoke(
+                    () =>
+                    {
+                        lastShimmerModel = Shimmer3DModel.GetModelFromArray(data.ToArray());
+                        Shimmer3DModel.PrintModel(lastShimmerModel);
+                        //queue.Enqueue(s);
+
+                        var x = lastShimmerModel.Gyroscope_X_CAL;
+                        var y = lastShimmerModel.Quaternion_1_CAL;
+                        var z = lastShimmerModel.Quaternion_2_CAL;
+                        var w = lastShimmerModel.Quaternion_3_CAL;
+
+                        //// This works in GUI
+                        XRot = x;
+                        //CubeRotation = new RotateTransform3D(
+                        //    new AxisAngleRotation3D(new Vector3D(0, 0, 1), z)
+                        //    );
+                    }
+                    );
+
+                //XAxis = new Vector3D(1, 0, 0);
 
             }
         }

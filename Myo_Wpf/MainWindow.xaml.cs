@@ -1,6 +1,10 @@
 ﻿using ShimmerRT.models;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media.Media3D;
 
 namespace Myo_Wpf
@@ -25,21 +29,27 @@ namespace Myo_Wpf
 
             // instantiate and assign the view model
             DataContext = viewModel = new Shimmer3dViewModel();
+
+            //// Trying to create a custom binding on cube Rotation to viewModel
+            //Cube.Transform = new RotateTransform3D();
+            //var bind = new Binding("CubeRotationCustom");
+            //bind.Source = viewModel.CubeRotation;
+            //BindingOperations.SetBinding(Cube, RotateTransform3D.RotationProperty, bind);
         }
 
         // TODO: unused in this class - will be moved to viewModel
         private void RotateCube(Shimmer3DModel s)
         {
             // Quaternion Calibrated Values
-            //var x = s.Quaternion_0_CAL;
-            //var y = s.Quaternion_1_CAL;
-            //var z = s.Quaternion_2_CAL;
-            //var w = s.Quaternion_3_CAL;
+            var x = s.Quaternion_0_CAL;
+            var y = s.Quaternion_1_CAL;
+            var z = s.Quaternion_2_CAL;
+            var w = s.Quaternion_3_CAL;
 
-            // Gyroscope Calibrated Values
-            var x = s.Gyroscope_X_CAL;
-            var y = s.Gyroscope_X_CAL;
-            var z = s.Gyroscope_X_CAL;
+            //// Gyroscope Calibrated Values
+            //var x = s.Gyroscope_X_CAL;
+            //var y = s.Gyroscope_X_CAL;
+            //var z = s.Gyroscope_X_CAL;
 
             //Shimmer3DModel.PrintModel(s);
 
@@ -47,9 +57,9 @@ namespace Myo_Wpf
             //Quaternion q = new Quaternion(new Vector3D(x, y, z), w);
             //Cube.Transform = new RotateTransform3D(new QuaternionRotation3D(q));
 
-            Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), x));
-            Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), y));
-            Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), z));
+            //Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), x));
+            //Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), y));
+            //Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), z));
 
         }
 
@@ -106,5 +116,6 @@ namespace Myo_Wpf
 
         //}
         #endregion
+        
     }
 }
