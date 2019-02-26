@@ -35,17 +35,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MathNet.Numerics, Version=2.6.1.30, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Documents\PPIT_Project\ShimmerRT_Library\ShimmerRT\bin\Debug\MathNet.Numerics.dll</HintPath>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>C:\Users\Justin\source\repos\ShimmerRT\ShimmerRT\bin\Debug\MathNet.Numerics.dll</HintPath>
     </Reference>
-    <Reference Include="ShimmerClosedLibraryRev0_4, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Documents\PPIT_Project\ShimmerRT_Library\ShimmerRT\bin\Debug\ShimmerClosedLibraryRev0_4.dll</HintPath>
+    <Reference Include="ShimmerClosedLibraryRev0_4">
+      <HintPath>C:\Users\Justin\source\repos\ShimmerRT\ShimmerRT\bin\Debug\ShimmerClosedLibraryRev0_4.dll</HintPath>
     </Reference>
-    <Reference Include="ShimmerRT, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Documents\PPIT_Project\ShimmerRT_Library\ShimmerRT\bin\Debug\ShimmerRT.dll</HintPath>
+    <Reference Include="ShimmerRT">
+      <HintPath>C:\Users\Justin\source\repos\ShimmerRT\ShimmerRT\bin\Debug\ShimmerRT.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

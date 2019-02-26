@@ -1,25 +1,12 @@
-﻿using ShimmerInterfaceTest;
-using ShimmerRT;
+﻿using ShimmerAPI;
+using ShimmerInterfaceTest;
 using ShimmerRT.models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO.Ports;
-using System.Linq;
-
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
+using Quaternion = System.Windows.Media.Media3D.Quaternion;
 
 namespace Myo_Wpf
 {
@@ -51,7 +38,7 @@ namespace Myo_Wpf
             {
                 System.Threading.Thread.Sleep(100);
             } while (!sc.ShimmerDevice.IsConnected());
-            
+
             txtOutput.Text += "\nConnected";
 
             txtOutput.Text += "\nStarting stream...";
@@ -86,7 +73,7 @@ namespace Myo_Wpf
 
         private void RotX_Clicked(object sender, RoutedEventArgs e)
         {
-            Quaternion q = new Quaternion(new Vector3D(1, 0, 0), randomInt());
+            Quaternion q = new System.Windows.Media.Media3D.Quaternion(new Vector3D(1, 0, 0), randomInt());
             // Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), randomInt()));
             Cube.Transform = new RotateTransform3D(new QuaternionRotation3D(q));
         }
@@ -116,14 +103,14 @@ namespace Myo_Wpf
 
             //Shimmer3DModel.PrintModel(s);
 
-            
+
             //Quaternion q = new Quaternion(new Vector3D(x, y, z), w);
             //Cube.Transform = new RotateTransform3D(new QuaternionRotation3D(q));
 
             Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), x));
             Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), y));
             Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), z));
-            
+
         }
 
         public void UpdateFeed(List<double> data)
