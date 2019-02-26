@@ -17,7 +17,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Viewport3D Margin="4" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4">
@@ -86,7 +85,7 @@
 
         </Viewport3D>
 
-        <Button x:Name="btnrotX" Click="RotX_Clicked" Grid.Column="1" Grid.Row="0" x:Uid="001">
+        <!--<Button x:Name="btnrotX" Click="RotX_Clicked" Grid.Column="1" Grid.Row="0" x:Uid="001">
             Rotate X
         </Button>
         <Button x:Name="btnrotY" Click="RotY_Clicked" Grid.Column="1" Grid.Row="1">
@@ -94,29 +93,32 @@
         </Button>
         <Button x:Name="btnrotZ" Click="RotZ_Clicked" Grid.Column="1" Grid.Row="2">
             Rotate Z
-        </Button>
+        </Button>-->
 
-        <StackPanel Grid.Column="1" Grid.Row="3">
+        <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="5">
             <TextBlock Text="Com Port Num:" TextAlignment="Center" FontWeight="Bold"/>
-            <TextBox x:Name="txtbxComPort" />
+            <TextBox Text="{Binding ComPort}" />
 
-            <Button x:Name="btnStart" Click="BtnStart_Click">
+            <!--<Button x:Name="btnStart" Click="BtnStart_Click">
                 Start
-            </Button>
+            </Button>-->
+            <Button Content="Start"
+                    Command="{Binding Path=StreamAndConnectCommand}"/>
 
-            <Button x:Name="btnStop"  Click="BtnStop_Click">
+            <Button Content="Stop"
+                    Command="{Binding Path=DisconnectCommand}"/>
+            <!--<Button x:Name="btnStop"  Click="BtnStop_Click">
                 Stop
-            </Button>
+            </Button>-->
+
+            <TextBlock Text="{Binding OutputText}"/>
+
+            <TextBlock Text="{Binding LastShimmerModel.Quaternion_0_CAL}"/>
+
         </StackPanel>
 
         <StackPanel Grid.Row="4" Grid.Column="0" >
             <TextBlock x:Name="txtOutput" VerticalAlignment="Stretch"/>
-        </StackPanel>
-
-        <StackPanel Grid.Column="1" Grid.Row="5">
-            <!--Testing Commanding from view to view model-->
-            <Button Content="Test Connect and Stream"
-                    Command="{Binding Path=StreamAndConnectCommand}"/>
         </StackPanel>
 
     </Grid>

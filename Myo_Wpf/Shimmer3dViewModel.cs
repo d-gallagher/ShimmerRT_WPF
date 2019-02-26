@@ -48,6 +48,8 @@ namespace Myo_Wpf
         private readonly DelegateCommand _streamAndConnectCommand;
         public ICommand StreamAndConnectCommand => _streamAndConnectCommand;
 
+        private readonly DelegateCommand _disconnectCommand;
+        public ICommand DisconnectCommand => _disconnectCommand;
 
         #endregion
 
@@ -56,6 +58,7 @@ namespace Myo_Wpf
         public Shimmer3dViewModel()
         {
             _streamAndConnectCommand = new DelegateCommand(ConnectAndStream);
+            _disconnectCommand = new DelegateCommand(Disconnect);
         }
 
         #endregion
@@ -65,37 +68,54 @@ namespace Myo_Wpf
         //Connecting/Disconnecting Logic
         private void ConnectAndStream(object cmdParam)
         {
-            //comPort = txtbxComPort.Text;
+            Debug.WriteLine("CONNECT AND STREAM");
+            Debug.WriteLine("CONNECTING ON " + comPort);
+
             OutputText += "\nConnecting...";
             OutputText += "\nCOM PORT: " + comPort;
-            Debug.WriteLine("COM PORT: " + comPort);
-            //sc = new ShimmerController(this);
             OutputText += "\nTrying to connect on " + this.comPort;
 
-            //sc.Connect(comPort);
+            int portNum;
+            string connStr = "COM";
+            try
+            {
+                portNum = Convert.ToInt32(comPort);
 
-            //do
-            //{
-            //    System.Threading.Thread.Sleep(100);
-            //} while (!sc.ShimmerDevice.IsConnected());
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                OutputText += "\nINVALID COM PORT";
+                return;
+            }
+
+
+            sc = new ShimmerController(this);
+            sc.Connect(connStr + portNum);
+
+
+            //TODO: improve this code - potential hang
+            do
+            {
+                System.Threading.Thread.Sleep(100);
+            } while (!sc.ShimmerDevice.IsConnected());
 
             OutputText += "\nConnected";
 
             OutputText += "\nStarting stream...";
 
-            //sc.ShimmerDevice.Set3DOrientation(true);
+            sc.ShimmerDevice.Set3DOrientation(true);
 
-            //sc.StartStream();
+            sc.StartStream();
         }
 
-        public void Disconnect()
+        private void Disconnect(object cmdParam)
         {
-            //print("Stopping stream...");
+            Debug.WriteLine("DISCONNECT");
             OutputText += "\nStopping stream";
             sc.StopStream();
             sc.ShimmerDevice.Disconnect();
             sc = null;
-
             OutputText += "\nStream Stopped";
             OutputText += "\nDisconnected";
         }
@@ -108,11 +128,11 @@ namespace Myo_Wpf
         {
             if (data != null)
             {
-                Shimmer3DModel s = Shimmer3DModel.GetModelFromArray(data.ToArray());
+                lastShimmerModel = Shimmer3DModel.GetModelFromArray(data.ToArray());
                 //dataQueue.Enqueue(s);
                 //if (count % 10 == 0) { Shimmer3DModel.PrintModel(s); }
                 //count++;
-
+                Shimmer3DModel.PrintModel(lastShimmerModel);
                 //RotateCube(s);
 
             }

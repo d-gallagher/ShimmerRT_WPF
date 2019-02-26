@@ -55,34 +55,34 @@ namespace Myo_Wpf
 
         #region EventHandlers
 
-        private void BtnStart_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: implement using Command or MessagingCenter
-            //ConnectAndStream();
-        }
+        //private void BtnStart_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // TODO: implement using Command or MessagingCenter
+        //    //ConnectAndStream();
+        //}
 
-        private void BtnStop_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: implement using Command or MessagingCenter
-            //Disconnect();
-        }
+        //private void BtnStop_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // TODO: implement using Command or MessagingCenter
+        //    //Disconnect();
+        //}
 
-        private void RotX_Clicked(object sender, RoutedEventArgs e)
-        {
-            Quaternion q = new System.Windows.Media.Media3D.Quaternion(new Vector3D(1, 0, 0), randomInt());
-            // Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), randomInt()));
-            Cube.Transform = new RotateTransform3D(new QuaternionRotation3D(q));
-        }
+        //private void RotX_Clicked(object sender, RoutedEventArgs e)
+        //{
+        //    Quaternion q = new System.Windows.Media.Media3D.Quaternion(new Vector3D(1, 0, 0), randomInt());
+        //    // Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), randomInt()));
+        //    Cube.Transform = new RotateTransform3D(new QuaternionRotation3D(q));
+        //}
 
-        private void RotY_Clicked(object sender, RoutedEventArgs e)
-        {
-            Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), randomInt()));
-        }
+        //private void RotY_Clicked(object sender, RoutedEventArgs e)
+        //{
+        //    Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), randomInt()));
+        //}
 
-        private void RotZ_Clicked(object sender, RoutedEventArgs e)
-        {
-            Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), randomInt()));
-        }
+        //private void RotZ_Clicked(object sender, RoutedEventArgs e)
+        //{
+        //    Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), randomInt()));
+        //}
 
         #endregion
 
