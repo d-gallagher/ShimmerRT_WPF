@@ -1,13 +1,16 @@
 ﻿using ShimmerAPI;
 using ShimmerInterfaceTest;
 using ShimmerRT.models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Input;
 
 namespace Myo_Wpf
 {
     public class Shimmer3dViewModel : BaseViewModel, IFeedable
     {
+        #region Fields and Properties
 
         //ref to shimmer controller
         private ShimmerController sc;
@@ -23,8 +26,12 @@ namespace Myo_Wpf
         private string outputText;
         public string OutputText
         {
-            get { return comPort; }
-            set { comPort = value; }
+            get { return outputText; }
+            set
+            {
+                outputText = value;
+                OnPropertyChanged();
+            }
         }
 
         private Shimmer3DModel lastShimmerModel;
@@ -38,31 +45,47 @@ namespace Myo_Wpf
             }
         }
 
+        private readonly DelegateCommand _streamAndConnectCommand;
+        public ICommand StreamAndConnectCommand => _streamAndConnectCommand;
+
+
+        #endregion
+
+        #region Constructor
+
+        public Shimmer3dViewModel()
+        {
+            _streamAndConnectCommand = new DelegateCommand(ConnectAndStream);
+        }
+
+        #endregion
+
         #region ShimmerController Connect/Disconnect
 
         //Connecting/Disconnecting Logic
-        public void ConnectAndStream()
+        private void ConnectAndStream(object cmdParam)
         {
             //comPort = txtbxComPort.Text;
             OutputText += "\nConnecting...";
             OutputText += "\nCOM PORT: " + comPort;
             Debug.WriteLine("COM PORT: " + comPort);
-            sc = new ShimmerController(this);
+            //sc = new ShimmerController(this);
             OutputText += "\nTrying to connect on " + this.comPort;
-            sc.Connect(comPort);
 
-            do
-            {
-                System.Threading.Thread.Sleep(100);
-            } while (!sc.ShimmerDevice.IsConnected());
+            //sc.Connect(comPort);
+
+            //do
+            //{
+            //    System.Threading.Thread.Sleep(100);
+            //} while (!sc.ShimmerDevice.IsConnected());
 
             OutputText += "\nConnected";
 
             OutputText += "\nStarting stream...";
 
-            sc.ShimmerDevice.Set3DOrientation(true);
+            //sc.ShimmerDevice.Set3DOrientation(true);
 
-            sc.StartStream();
+            //sc.StartStream();
         }
 
         public void Disconnect()

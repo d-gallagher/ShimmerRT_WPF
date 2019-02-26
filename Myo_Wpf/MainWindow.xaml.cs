@@ -22,6 +22,9 @@ namespace Myo_Wpf
         public MainWindow()
         {
             InitializeComponent();
+
+            // instantiate and assign the view model
+            DataContext = viewModel = new Shimmer3dViewModel();
         }
 
         // TODO: unused in this class - will be moved to viewModel

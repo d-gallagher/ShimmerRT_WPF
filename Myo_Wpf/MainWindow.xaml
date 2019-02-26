@@ -114,7 +114,9 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="5">
-            
+            <!--Testing Commanding from view to view model-->
+            <Button Content="Test Connect and Stream"
+                    Command="{Binding Path=StreamAndConnectCommand}"/>
         </StackPanel>
 
     </Grid>
