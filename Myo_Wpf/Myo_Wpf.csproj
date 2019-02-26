@@ -64,6 +64,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Shimmer3dViewModel.cs" />
     <Compile Include="ShimmerFeeder.cs" />
     <Compile Include="ShimmerFeedSample.cs" />
     <Page Include="MainWindow.xaml">

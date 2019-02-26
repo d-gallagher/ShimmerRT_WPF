@@ -17,8 +17,11 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
         <Viewport3D Margin="4" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4">
+
             <ModelVisual3D>
                 <ModelVisual3D.Content>
                     <Model3DGroup>
@@ -80,8 +83,9 @@
                     </PerspectiveCamera.Transform>
                 </PerspectiveCamera>
             </Viewport3D.Camera>
-            
+
         </Viewport3D>
+
         <Button x:Name="btnrotX" Click="RotX_Clicked" Grid.Column="1" Grid.Row="0" x:Uid="001">
             Rotate X
         </Button>
@@ -91,20 +95,28 @@
         <Button x:Name="btnrotZ" Click="RotZ_Clicked" Grid.Column="1" Grid.Row="2">
             Rotate Z
         </Button>
+
         <StackPanel Grid.Column="1" Grid.Row="3">
             <TextBlock Text="Com Port Num:" TextAlignment="Center" FontWeight="Bold"/>
             <TextBox x:Name="txtbxComPort" />
+
             <Button x:Name="btnStart" Click="BtnStart_Click">
-            Start
-        </Button>
-        <Button x:Name="btnStop"  Click="BtnStop_Click">
-            Stop
-        </Button>
+                Start
+            </Button>
+
+            <Button x:Name="btnStop"  Click="BtnStop_Click">
+                Stop
+            </Button>
         </StackPanel>
+
         <StackPanel Grid.Row="4" Grid.Column="0" >
             <TextBlock x:Name="txtOutput" VerticalAlignment="Stretch"/>
-
         </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="5">
+            
+        </StackPanel>
+
     </Grid>
-    
+
 </Window>

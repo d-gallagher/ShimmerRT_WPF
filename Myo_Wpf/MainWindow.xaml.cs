@@ -1,93 +1,30 @@
-﻿using ShimmerAPI;
-using ShimmerInterfaceTest;
-using ShimmerRT.models;
+﻿using ShimmerRT.models;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media.Media3D;
-using Quaternion = System.Windows.Media.Media3D.Quaternion;
 
 namespace Myo_Wpf
 {
-    public partial class MainWindow : Window, IFeedable
+    public partial class MainWindow : Window
     {
-        //port for the shimmer
-        public string comPort;
+        #region Static
 
-        //ref to shimmer controller
-        private ShimmerController sc;
+        private static Random rand = new Random(361);
+        public int randomInt()
+        {
+            return rand.Next();
+        }
+
+        #endregion
+
+        private Shimmer3dViewModel viewModel;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        //Connecting/Disconnecting Logic
-        public void ConnectAndStream()
-        {
-            comPort = txtbxComPort.Text;
-            txtOutput.Text = "Connecting...";
-            txtOutput.Text = "COM PORT: " + comPort;
-            Debug.WriteLine("COM PORT: " + comPort);
-            sc = new ShimmerController(this);
-            txtOutput.Text += "\nTrying to connect on " + this.comPort;
-            sc.Connect(comPort);
-
-            do
-            {
-                System.Threading.Thread.Sleep(100);
-            } while (!sc.ShimmerDevice.IsConnected());
-
-            txtOutput.Text += "\nConnected";
-
-            txtOutput.Text += "\nStarting stream...";
-
-            sc.ShimmerDevice.Set3DOrientation(true);
-
-            sc.StartStream();
-        }
-
-        public void Disconnect()
-        {
-            //print("Stopping stream...");
-            txtOutput.Text += "\nStopping stream";
-            sc.StopStream();
-            sc.ShimmerDevice.Disconnect();
-            sc = null;
-            //do
-            //{
-            //    System.Threading.Thread.Sleep(100);
-            //} while (sc.ShimmerDevice.IsConnected());
-            txtOutput.Text += "\nStream Stopped";
-            txtOutput.Text += "\nDisconnected";
-        }
-
-        public int randomInt()
-        {
-            Random r = new Random();
-            int rInt = r.Next(0, 361);
-
-            return rInt;
-        }
-
-        private void RotX_Clicked(object sender, RoutedEventArgs e)
-        {
-            Quaternion q = new System.Windows.Media.Media3D.Quaternion(new Vector3D(1, 0, 0), randomInt());
-            // Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), randomInt()));
-            Cube.Transform = new RotateTransform3D(new QuaternionRotation3D(q));
-        }
-
-        private void RotY_Clicked(object sender, RoutedEventArgs e)
-        {
-            Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), randomInt()));
-        }
-
-        private void RotZ_Clicked(object sender, RoutedEventArgs e)
-        {
-            Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), randomInt()));
-        }
-
+        // TODO: unused in this class - will be moved to viewModel
         private void RotateCube(Shimmer3DModel s)
         {
             // Quaternion Calibrated Values
@@ -113,48 +50,58 @@ namespace Myo_Wpf
 
         }
 
-        public void UpdateFeed(List<double> data)
-        {
-            if (data != null)
-            {
-                Shimmer3DModel s = Shimmer3DModel.GetModelFromArray(data.ToArray());
-                //dataQueue.Enqueue(s);
-                //if (count % 10 == 0) { Shimmer3DModel.PrintModel(s); }
-                //count++;
-
-                RotateCube(s);
-
-            }
-        }
+        #region EventHandlers
 
         private void BtnStart_Click(object sender, RoutedEventArgs e)
         {
-            ConnectAndStream();
+            // TODO: implement using Command or MessagingCenter
+            //ConnectAndStream();
         }
 
         private void BtnStop_Click(object sender, RoutedEventArgs e)
         {
-            Disconnect();
+            // TODO: implement using Command or MessagingCenter
+            //Disconnect();
         }
+
+        private void RotX_Clicked(object sender, RoutedEventArgs e)
+        {
+            Quaternion q = new System.Windows.Media.Media3D.Quaternion(new Vector3D(1, 0, 0), randomInt());
+            // Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), randomInt()));
+            Cube.Transform = new RotateTransform3D(new QuaternionRotation3D(q));
+        }
+
+        private void RotY_Clicked(object sender, RoutedEventArgs e)
+        {
+            Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), randomInt()));
+        }
+
+        private void RotZ_Clicked(object sender, RoutedEventArgs e)
+        {
+            Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), randomInt()));
+        }
+
+        #endregion
+
+        #region Alternative SerialPort connection code - retaining for future reference
+        //public void connectToShimmer(String port, int baudRate, Parity parity, int databits, StopBits stopBits)
+        //{
+        //    //https://www.youtube.com/watch?v=BGb5LIyMmvM
+        //    //https://docs.microsoft.com/en-us/dotnet/api/system.io.ports.serialport?redirectedfrom=MSDN&view=netframework-4.7.2
+        //    comPort = new SerialPort(port, baudRate, parity, databits, stopBits);
+
+        //    try
+        //    {
+        //        //comPort.DataReceived += new SerialDataReceivedEventHandler();
+        //    }
+        //    catch (Exception ex){ MessageBox.Show(ex.ToString() + " In ConnectToShimmer"); }
+
+        //}
+
+        //private void comPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        //{
+
+        //}
+        #endregion
     }
-    #region temp connect 
-    //public void connectToShimmer(String port, int baudRate, Parity parity, int databits, StopBits stopBits)
-    //{
-    //    //https://www.youtube.com/watch?v=BGb5LIyMmvM
-    //    //https://docs.microsoft.com/en-us/dotnet/api/system.io.ports.serialport?redirectedfrom=MSDN&view=netframework-4.7.2
-    //    comPort = new SerialPort(port, baudRate, parity, databits, stopBits);
-
-    //    try
-    //    {
-    //        //comPort.DataReceived += new SerialDataReceivedEventHandler();
-    //    }
-    //    catch (Exception ex){ MessageBox.Show(ex.ToString() + " In ConnectToShimmer"); }
-
-    //}
-
-    //private void comPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
-    //{
-
-    //}
-    #endregion
 }
