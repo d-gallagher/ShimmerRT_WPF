@@ -71,22 +71,13 @@ namespace Myo_Wpf
             }
         }
 
+        private readonly MainWindow _parent;
         private readonly DelegateCommand _streamAndConnectCommand;
         public ICommand StreamAndConnectCommand => _streamAndConnectCommand;
 
         private readonly DelegateCommand _disconnectCommand;
         public ICommand DisconnectCommand => _disconnectCommand;
 
-        private Vector3D xAxis;
-        public Vector3D XAxis
-        {
-            get => xAxis;
-            set
-            {
-                xAxis = value;
-                OnPropertyChanged();
-            }
-        }
 
         private double xRot;
         public double XRot
@@ -99,17 +90,86 @@ namespace Myo_Wpf
             }
         }
 
+        private double yRot;
+        public double YRot
+        {
+            get => yRot;
+            set
+            {
+                yRot = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double zRot;
+        public double ZRot
+        {
+            get => zRot;
+            set
+            {
+                zRot = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Vector3D xAxis;
+        public Vector3D XAxis
+        {
+            get => xAxis;
+            set
+            {
+                xAxis = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Vector3D yAxis;
+        public Vector3D YAxis
+        {
+            get => yAxis;
+            set
+            {
+                yAxis = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Vector3D zAxis;
+        public Vector3D ZAxis
+        {
+            get => zAxis;
+            set
+            {
+                zAxis = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<Shimmer3DModel> _models;
+        public ObservableCollection<Shimmer3DModel> Models
+        {
+            get => _models;
+            set
+            {
+                _models = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         #endregion
 
         #region Constructor
 
-        public Shimmer3dViewModel()
+        public Shimmer3dViewModel(MainWindow parent)
         {
+            _parent = parent;
             _streamAndConnectCommand = new DelegateCommand(ConnectAndStream);
             _disconnectCommand = new DelegateCommand(Disconnect);
 
-            XAxis = new Vector3D(1, 0, 0);
+            XAxis = new Vector3D(0, 0, 1);
+            YAxis = new Vector3D(1, 0, 0);
+            ZAxis = new Vector3D(0, 1, 0);
         }
 
         #endregion
@@ -200,6 +260,8 @@ namespace Myo_Wpf
                 //var rot = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), z));
                 //rot.Freeze();
                 //// Trying to create the rotation object on UI thread...?
+                ///
+
                 Dispatcher.CurrentDispatcher.Invoke(
                     () =>
                     {
@@ -207,13 +269,22 @@ namespace Myo_Wpf
                         Shimmer3DModel.PrintModel(lastShimmerModel);
                         //queue.Enqueue(s);
 
-                        var x = lastShimmerModel.Gyroscope_X_CAL;
-                        var y = lastShimmerModel.Quaternion_1_CAL;
-                        var z = lastShimmerModel.Quaternion_2_CAL;
-                        var w = lastShimmerModel.Quaternion_3_CAL;
+                        //_models.Add(lastShimmerModel);
 
-                        //// This works in GUI
+                        //UpdateView(lastShimmerModel);
+
+
+
+                        var x = lastShimmerModel.Gyroscope_X_CAL;
+                        var y = lastShimmerModel.Gyroscope_Y_CAL;
+                        var z = lastShimmerModel.Gyroscope_Z_CAL;
+                        //var w = lastShimmerModel.Quaternion_3_CAL;
+
+                        ////// This works in GUI
                         XRot = x;
+                        YRot = y;
+                        ZRot = z;
+
                         //CubeRotation = new RotateTransform3D(
                         //    new AxisAngleRotation3D(new Vector3D(0, 0, 1), z)
                         //    );
@@ -223,6 +294,22 @@ namespace Myo_Wpf
                 //XAxis = new Vector3D(1, 0, 0);
 
             }
+        }
+
+        private void UpdateView(Shimmer3DModel lastShimmerModel)
+        {
+            var x = lastShimmerModel.Gyroscope_X_CAL;
+            var y = lastShimmerModel.Quaternion_1_CAL;
+            var z = lastShimmerModel.Quaternion_2_CAL;
+            var w = lastShimmerModel.Quaternion_3_CAL;
+
+            //// This works in GUI
+            XRot = x;
+
+            //// This does not work in GUI - dependency source error
+            CubeRotation = new RotateTransform3D(
+                new AxisAngleRotation3D(new Vector3D(0, 0, 1), z)
+                );
         }
 
         #endregion

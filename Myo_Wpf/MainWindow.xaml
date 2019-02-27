@@ -55,11 +55,33 @@
                             </GeometryModel3D.Material>
 
                             <GeometryModel3D.Transform>
-                                <RotateTransform3D>
-                                    <RotateTransform3D.Rotation>
-                                        <AxisAngleRotation3D Axis="{Binding XAxis}" Angle="{Binding XRot}" />
-                                    </RotateTransform3D.Rotation>
-                                </RotateTransform3D>
+
+                                <Transform3DGroup>
+
+                                    <RotateTransform3D>
+                                        <RotateTransform3D.Rotation>
+                                            <!--X Axis-->
+                                            <AxisAngleRotation3D Axis="{Binding XAxis}" Angle="{Binding XRot}"/>
+                                        </RotateTransform3D.Rotation>
+
+                                    </RotateTransform3D>
+
+                                    <RotateTransform3D>
+                                        <RotateTransform3D.Rotation>
+                                            <!--Y Axis-->
+                                            <AxisAngleRotation3D Axis="{Binding YAxis}" Angle="{Binding YRot}"/>
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+
+                                    <RotateTransform3D>
+                                        <RotateTransform3D.Rotation>
+                                            <!--Z Axis-->
+                                            <AxisAngleRotation3D Axis="{Binding ZAxis}" Angle="{Binding ZRot}"/>
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+
+                                </Transform3DGroup>
+
                             </GeometryModel3D.Transform>
                         </GeometryModel3D>
 
@@ -159,9 +181,18 @@
             <TextBlock Text="{Binding CubeRotation.Rotation}"/>
 
             <StackPanel Orientation="Horizontal">
-                <Label Content="XRot: "/>
+                <Label Content="X: "/>
                 <TextBlock Text="{Binding XRot}"/>
+            </StackPanel>
 
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Y: "/>
+                <TextBlock Text="{Binding YRot}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Z: "/>
+                <TextBlock Text="{Binding ZRot}"/>
             </StackPanel>
 
         </StackPanel>

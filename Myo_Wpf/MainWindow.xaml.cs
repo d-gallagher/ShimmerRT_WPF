@@ -1,11 +1,7 @@
 ﻿using ShimmerRT.models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media.Media3D;
 
 namespace Myo_Wpf
 {
@@ -23,12 +19,14 @@ namespace Myo_Wpf
 
         private Shimmer3dViewModel viewModel;
 
+        //private ObservableCollection<Shimmer3DModel> _models = new ObservableCollection<Shimmer3DModel>();
+
         public MainWindow()
         {
             InitializeComponent();
 
             // instantiate and assign the view model
-            DataContext = viewModel = new Shimmer3dViewModel();
+            DataContext = viewModel = new Shimmer3dViewModel(this);
 
             //// Trying to create a custom binding on cube Rotation to viewModel
             //Cube.Transform = new RotateTransform3D();
@@ -61,6 +59,10 @@ namespace Myo_Wpf
             //Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), y));
             //Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), z));
 
+        }
+
+        public void UpdateView()
+        {
         }
 
         #region EventHandlers
@@ -116,6 +118,6 @@ namespace Myo_Wpf
 
         //}
         #endregion
-        
+
     }
 }
