@@ -65,6 +65,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="CubeBuilder.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Shimmer3dViewModel.cs" />
     <Compile Include="ShimmerFeeder.cs" />
