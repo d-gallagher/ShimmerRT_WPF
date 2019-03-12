@@ -12,24 +12,33 @@ namespace Myo_Wpf
 {
     class ShimmerFeeder : IFeedable
     {
-        int count = 0; // number of items processed
+        #region == Fields and Properties ==
+        private string comPort;
+        private ShimmerController sc;
 
-        // queue to hold shimmer data
-        public Queue<ShimmerModel> dataQueue = new Queue<ShimmerModel>(100);
+        // data structure used to shared data between this Shimmer 
+        // and ShimmerJointOrientation
+        public Queue<Shimmer3DModel> Queue { get; set; }
 
-        private readonly string comPort; // com port to be used for connection to shimmer
+        // True if and only if this Shimmer has paired successfully, at which point it will 
+        // provide data and a connection with it will be maintained when possible.
+        public bool IsPaired
+        {
+            get { return sc != null && sc.ShimmerDevice.IsConnected(); }
+        }
+        #endregion
 
         // COM PORT may need to be changed depending on Shimmer device and System
         public ShimmerFeeder(string comPort)
         {
             this.comPort = comPort;
-            this.dataQueue = new Queue<ShimmerModel>();
+            Queue = new Queue<Shimmer3DModel>();
         }
 
         public void Start()
         {
             Console.WriteLine(Environment.OSVersion.Platform);
-            ShimmerController sc = new ShimmerController(this);
+            sc = new ShimmerController(this);
 
             sc.Connect(comPort);
             Console.WriteLine("Connecting...");
@@ -55,16 +64,18 @@ namespace Myo_Wpf
             Console.ReadKey();
         }
 
-        // this method is called for each model as it is received
+        #region == Get data ==
+        // this method is called for each row of data received from the Shimmer
         public void UpdateFeed(List<double> data)
         {
-            if (data != null)
+            Shimmer3DModel s;
+            if (data.Count > 0)
             {
-                Shimmer3DModel s = Shimmer3DModel.GetModelFromArray(data.ToArray());
-                dataQueue.Enqueue(s);
-                if (count % 10 == 0) { Shimmer3DModel.PrintModel(s); }
-                count++;
+                // put this data as a model on the shared Queue
+                s = Shimmer3DModel.GetModelFromArray(data.ToArray());
+                Queue.Enqueue(s);
             }
         }
+        #endregion
     }
 }

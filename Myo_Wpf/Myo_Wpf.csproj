@@ -36,13 +36,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MathNet.Numerics">
-      <HintPath>C:\Users\Justin\source\repos\ShimmerRT\ShimmerRT\bin\Debug\MathNet.Numerics.dll</HintPath>
+      <HintPath>..\..\ShimmerRT_Library\ShimmerRT\bin\Debug\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="ShimmerClosedLibraryRev0_4">
-      <HintPath>C:\Users\Justin\source\repos\ShimmerRT\ShimmerRT\bin\Debug\ShimmerClosedLibraryRev0_4.dll</HintPath>
+      <HintPath>..\..\ShimmerRT_Library\ShimmerRT\bin\Debug\ShimmerClosedLibraryRev0_4.dll</HintPath>
     </Reference>
     <Reference Include="ShimmerRT">
-      <HintPath>C:\Users\Justin\source\repos\ShimmerRT\ShimmerRT\bin\Debug\ShimmerRT.dll</HintPath>
+      <HintPath>..\..\ShimmerRT_Library\ShimmerRT\bin\Debug\ShimmerRT.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

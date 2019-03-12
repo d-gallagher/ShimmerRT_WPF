@@ -1,7 +1,9 @@
-﻿using ShimmerRT.models;
+﻿using Myo_Wpf.Cube;
+using ShimmerRT.models;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Media.Media3D;
 
 namespace Myo_Wpf
 {
@@ -18,6 +20,8 @@ namespace Myo_Wpf
         #endregion
 
         private Shimmer3dViewModel viewModel;
+        private ShimmerFeeder shimmerFeeder;
+        Model3DGroup cube = new Model3DGroup();
 
         //private ObservableCollection<Shimmer3DModel> _models = new ObservableCollection<Shimmer3DModel>();
 
@@ -33,16 +37,25 @@ namespace Myo_Wpf
             //var bind = new Binding("CubeRotationCustom");
             //bind.Source = viewModel.CubeRotation;
             //BindingOperations.SetBinding(Cube, RotateTransform3D.RotationProperty, bind);
+            InitCube();
+            //Update();
+        }
+
+        private void Update()
+        {
+            // if data is available, use it
+            if (shimmerFeeder.Queue.Count > 0)
+                RotateCube(shimmerFeeder.Queue.Dequeue());
         }
 
         // TODO: unused in this class - will be moved to viewModel
         private void RotateCube(Shimmer3DModel s)
         {
             // Quaternion Calibrated Values
-            var x = s.Quaternion_0_CAL;
-            var y = s.Quaternion_1_CAL;
-            var z = s.Quaternion_2_CAL;
-            var w = s.Quaternion_3_CAL;
+            //var x = s.Quaternion_0_CAL;
+            //var y = s.Quaternion_1_CAL;
+            //var z = s.Quaternion_2_CAL;
+            //var w = s.Quaternion_3_CAL;
 
             //// Gyroscope Calibrated Values
             //var x = s.Gyroscope_X_CAL;
@@ -59,6 +72,26 @@ namespace Myo_Wpf
             //Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), y));
             //Cube.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), z));
 
+            //ShimmerOnAStick Conf using w=o, x=1, y=2, z=3
+            Quaternion newRotation = new Quaternion(
+                -(float)s.Quaternion_1_CAL,//x
+                -(float)s.Quaternion_2_CAL,//y
+                (float)s.Quaternion_3_CAL,//z
+                -(float)s.Quaternion_0_CAL);
+
+            cube.Transform = new RotateTransform3D(new QuaternionRotation3D(newRotation));
+
+        }
+
+        public void InitCube()
+        {
+            //create cube
+            cube = CubeBuilder.CreateCubeGroup(2,2,2);
+            //add cube to content
+            ModelVisual3D Model = new ModelVisual3D();
+            Model.Content = cube;
+            //set cube in scene
+            this.mainViewPort.Children.Add(Model);
         }
 
         public void UpdateView()
